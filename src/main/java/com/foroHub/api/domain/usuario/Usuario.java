@@ -1,13 +1,11 @@
 package com.foroHub.api.domain.usuario;
 
 import com.foroHub.api.domain.perfiles.Perfiles;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -20,8 +18,16 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
     private String nombre;
     private String correoElectronico;
     private Long contrasena;
-    private List<Perfiles> perfiles;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "usuario_perfil",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "perfil_id"))
+    private Set<Perfiles> perfiles;
 }
