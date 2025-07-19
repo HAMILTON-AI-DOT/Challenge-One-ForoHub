@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
@@ -32,4 +31,12 @@ public class Respuesta {
     @ManyToOne
     private Usuario autor;
     private Boolean solucion = false;
+
+    public Respuesta(DatosRespuesta datosRespuesta) {
+        this.id = null;
+        this.mensaje = datosRespuesta.mensaje();
+        this.fechaDeCreacion = LocalDate.now();
+        this.autor = getAutor();
+        this.solucion = solucion;
+    }
 }

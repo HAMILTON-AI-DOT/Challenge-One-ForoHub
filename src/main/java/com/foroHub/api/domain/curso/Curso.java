@@ -9,7 +9,6 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
@@ -21,4 +20,10 @@ public class Curso {
 
     private String nombre;
     private String categoria;
+
+
+    public Curso(DatosCurso datosCurso) {
+        this.categoria = datosCurso.categoria();
+        this.nombre = datosCurso.nombre();
+    }
 }

@@ -4,7 +4,6 @@ import com.foroHub.api.domain.perfiles.Perfiles;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,4 +29,10 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "perfil_id"))
     private Set<Perfiles> perfiles;
+
+    public Usuario(String nombre, String correoElectronico, Long contrasena) {
+        this.nombre = nombre;
+        this.correoElectronico = correoElectronico;
+        this.contrasena = contrasena;
+    }
 }
