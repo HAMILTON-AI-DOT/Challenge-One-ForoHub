@@ -45,10 +45,9 @@ public class TopicoController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> obtenerTopicoPorId(@PathVariable Long id) {
-        return topicoRepository.findById(id)
-                .map(topico -> ResponseEntity.ok(new DatosDetalleTopico(topico)))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<DatosDetalleTopico> buscarTopicoPorId(@PathVariable Long id) {
+        DatosDetalleTopico detalle = topicoService.buscarPorId(id);
+        return ResponseEntity.ok(detalle);
     }
 
 

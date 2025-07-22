@@ -2,7 +2,6 @@ package com.foroHub.api.domain.topico;
 
 import com.foroHub.api.domain.curso.Curso;
 import com.foroHub.api.domain.perfiles.Perfiles;
-import com.foroHub.api.domain.respuesta.DatosRespuesta;
 import com.foroHub.api.domain.respuesta.Respuesta;
 import com.foroHub.api.domain.usuario.Usuario;
 import jakarta.persistence.*;
@@ -10,7 +9,6 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

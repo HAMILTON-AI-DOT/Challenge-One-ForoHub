@@ -6,12 +6,10 @@ import com.foroHub.api.domain.usuario.Usuario;
 import com.foroHub.api.repository.CursoRepository;
 import com.foroHub.api.repository.TopicoRepository;
 import com.foroHub.api.repository.UsuarioRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @Service
@@ -58,11 +56,11 @@ public class TopicoService {
 
 
 
-    public Topico buscarTopicoPorId(Long id){
-        var topico = topicoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-       return topico;
+    public DatosDetalleTopico buscarPorId(Long id) {
+        return topicoRepository.findById(id)
+                .map(DatosDetalleTopico::new)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico no encontrado"));
     }
-
 
 
     public Optional<DatosDetalleTopico> actualizarTopico(Long id, DatosActualizarTopico datos) {
