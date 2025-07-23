@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @Service
-public class TopicoService {
+public class  TopicoService {
 
     @Autowired
     private PerfilesService perfilesService;
