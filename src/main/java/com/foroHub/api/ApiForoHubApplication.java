@@ -8,6 +8,11 @@ public class ApiForoHubApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiForoHubApplication.class, args);
+
+
+
+
+
 	}
 
 }
