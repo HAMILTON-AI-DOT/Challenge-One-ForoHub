@@ -1,122 +1,146 @@
+# 📚 Foro-Hub API
 
-# 📚 ForoHub API - Documentación
+API para el sistema de foros de Alura Latam que permite la gestión completa de tópicos, cursos, respuestas y usuarios con autenticación JWT.
 
-## Descripción del Proyecto
-ForoHub es una API REST desarrollada con **Spring Boot** que permite la gestión de un foro de discusión, incluyendo autenticación JWT, publicación de temas, comentarios y más.
+## 🔍 Funcionalidades Principales
 
-## 🛠 Tecnologías Utilizadas
-- **Java 17**
-- **Spring Boot 3.2**
-- **Spring Security**
-- **JWT (Auth0)**
-- **MySQL**
-- **Hibernate/JPA**
-- **Maven**
+### 👥 Gestión de Usuarios
+- Registro de nuevos usuarios (estudiantes y moderadores)
+- Autenticación con JWT
+- Perfiles de usuario
 
-## 🔐 Autenticación JWT
-La API utiliza tokens JWT para autenticación. Ejemplo de flujo:
+### 📝 Gestión de Tópicos
+- Creación de nuevos tópicos de discusión
+- Listado paginado de tópicos
+- Edición y eliminación
+- Búsqueda por categoría/curso
 
-1. **Login** (`POST /login`):
-```json
+### 🎓 Gestión de Cursos
+- Creación de cursos relacionados
+- Asignación de tópicos a cursos
+
+### 💬 Gestión de Respuestas
+- Respuestas a tópicos
+- Moderación de contenido
+
+## 🌐 Endpoints
+
+### 🔐 Autenticación
+| Método | Endpoint       | Descripción                          |
+|--------|----------------|--------------------------------------|
+| POST   | `/auth/registro` | Registra nuevo usuario               |
+| POST   | `/auth/login`    | Genera token JWT                     |
+
+### 👤 Usuarios
+| Método | Endpoint          | Descripción                          |
+|--------|-------------------|--------------------------------------|
+| GET    | `/usuarios/{id}`  | Obtiene perfil de usuario            |
+| PUT    | `/usuarios/{id}`  | Actualiza información                |
+
+### 📚 Tópicos
+| Método | Endpoint              | Descripción                          |
+|--------|-----------------------|--------------------------------------|
+| POST   | `/topicos`            | Crea nuevo tópico                    |
+| GET    | `/topicos?page=0`     | Lista 10 tópicos (paginado)          |
+| GET    | `/topicos/{id}`       | Obtiene tópico específico            |
+| PUT    | `/topicos/{id}`       | Edita tópico                         |
+| DELETE | `/topicos/{id}`       | Elimina tópico                       |
+
+### 🎓 Cursos
+| Método | Endpoint              | Descripción                          |
+|--------|-----------------------|--------------------------------------|
+| POST   | `/cursos`             | Crea nuevo curso                     |
+| GET    | `/cursos/{id}/topicos`| Lista tópicos del curso              |
+
+### 💬 Respuestas
+| Método | Endpoint                     | Descripción                          |
+|--------|------------------------------|--------------------------------------|
+| POST   | `/topicos/{id}/respuestas`    | Añade respuesta a tópico             |
+| PUT    | `/respuestas/{id}`            | Edita respuesta                      |
+| DELETE | `/respuestas/{id}`            | Elimina respuesta                    |
+
+## 📝 Ejemplos de Uso
+
+### 1. Registrar Usuario
+```http
+POST /auth/registro
+Content-Type: application/json
+
 {
-  "email": "usuario@ejemplo.com",
-  "password": "contraseña"
+  "nombre": "María García",
+  "email": "maria@alura.com",
+  "password": "contraseñaSegura123",
+  "rol": "ESTUDIANTE"
 }
 ```
 
-2. **Respuesta**:
-```json
+### 2. Crear Tópico
+```http
+POST /topicos
+Authorization: Bearer <token>
+Content-Type: application/json
+
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "titulo": "Dudas sobre Spring Security",
+  "mensaje": "¿Cómo implementar JWT correctamente?",
+  "cursoId": 5,
+  "tags": ["java", "spring", "security"]
 }
 ```
 
-3. **Uso del token**:
-```
+### 3. Listar Tópicos (Paginado)
+```http
+GET /topicos?page=0&size=10
 Authorization: Bearer <token>
 ```
 
-## 📦 Estructura del Proyecto
-```
-src/
-├── main/
-│   ├── java/
-│   │   └── com/foroHub/
-│   │       ├── config/       # Configuraciones
-│   │       ├── controller/   # Controladores
-│   │       ├── dto/          # Objetos de transferencia
-│   │       ├── exceptions/   # Manejo de errores
-│   │       ├── model/        # Entidades
-│   │       ├── repository/   # Repositorios
-│   │       ├── security/     # Configuración de seguridad
-│   │       └── service/      # Lógica de negocio
-│   └── resources/
-│       ├── application.properties
-│       └── ...
-└── test/                     # Pruebas
+### 4. Añadir Respuesta
+```http
+POST /topicos/8/respuestas
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "contenido": "Debes configurar el SecurityFilter correctamente",
+  "solucion": true
+}
 ```
 
-## ⚙️ Configuración
-1. **application.properties**:
-```properties
-# Database
-spring.datasource.url=jdbc:mysql://localhost:3306/forohub
-spring.datasource.username=root
-spring.datasource.password=password
+## 🔧 Estructura de Datos
 
-# JWT
-jwt.secret=TuClaveSecretaDe32Caracteres123456!!
-jwt.expiration=7200 # 2 horas en segundos
+### Tópico
+```json
+{
+  "id": 1,
+  "titulo": "Dudas sobre Spring",
+  "mensaje": "¿Cómo funciona...?",
+  "fechaCreacion": "2023-11-20",
+  "estado": "NO_RESPONDIDO",
+  "autor": {
+    "id": 3,
+    "nombre": "Carlos Méndez"
+  },
+  "curso": {
+    "id": 5,
+    "nombre": "Spring Boot Avanzado"
+  },
+  "tags": ["java", "spring"],
+  "respuestas": []
+}
 ```
 
-2. **Variables de entorno**:
-```bash
-export JWT_SECRET="TuClaveSecreta"
-export DB_PASSWORD="password"
+### Respuesta
+```json
+{
+  "id": 15,
+  "mensaje": "Debes inyectar el servicio...",
+  "fechaCreacion": "2023-11-21",
+  "solucion": true,
+  "autor": {
+    "id": 2,
+    "nombre": "Ana López"
+  }
+}
 ```
 
-## 🚀 Instalación y Ejecución
-1. Clonar repositorio:
-```bash
-git clone https://github.com/tu-usuario/forohub-api.git
-```
-
-2. Configurar base de datos:
-```sql
-CREATE DATABASE forohub;
-```
-
-3. Ejecutar aplicación:
-```bash
-mvn spring-boot:run
-```
-
-## 📌 Endpoints Principales
-| Método | Endpoint            | Descripción               |
-|--------|---------------------|---------------------------|
-| POST   | /api/auth/login     | Autenticación de usuarios |
-| GET    | /api/temas          | Obtener todos los temas   |
-| POST   | /api/temas          | Crear nuevo tema          |
-| GET    | /api/temas/{id}     | Obtener tema por ID       |
-
-## 🌐 Swagger UI
-Accede a la documentación interactiva en:
-```
-http://localhost:8080/swagger-ui.html
-```
-
-## 🧪 Pruebas
-Ejecutar pruebas unitarias:
-```bash
-mvn test
-```
-
-## 🤝 Contribución
-1. Haz fork del proyecto
-2. Crea tu rama (`git checkout -b feature/nueva-funcionalidad`)
-3. Haz commit de tus cambios (`git commit -m 'Agrega nueva funcionalidad'`)
-4. Haz push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-MIT License - Ver [LICENSE](LICENSE) para más detalles.
+Este diseño permite una gestión completa del foro educativo con relaciones claras entre usuarios, tópicos, cursos y respuestas.
